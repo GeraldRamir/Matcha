@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KUMO Matcha — Landing premium
 
-## Getting Started
+Landing page de venta de matcha con sistema de pedidos por WhatsApp y email.
+Construida con Next.js (App Router), Tailwind CSS v4 y Framer Motion.
 
-First, run the development server:
+## Empezar
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Configuración del negocio
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edita `data/site.ts` para poner tus datos reales:
 
-## Learn More
+- `whatsappNumber` — número de WhatsApp con código de país, sin `+` ni espacios (ej. `18095550123`)
+- `email` — correo donde recibirás los pedidos
+- `url` — dominio de producción (usado en SEO/OpenGraph)
+- Dirección, horarios e Instagram
 
-To learn more about Next.js, take a look at the following resources:
+Los productos, precios, testimonios, FAQs y textos viven en `/data`. No hay que
+tocar componentes para cambiar el contenido.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Páginas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/` — Hero, beneficios, productos destacados y testimonios
+- `/productos` — Tienda completa y tabla comparativa
+- `/origen` — Proceso, por qué elegirnos y galería
+- `/faq` — Preguntas frecuentes
+- `/pedido` — Formulario de pedido y proceso de compra
 
-## Deploy on Vercel
+## Estructura
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/          Layout compartido (navbar/footer), páginas por sección, SEO
+components/
+  ui/         Sistema de diseño: Button, Card, Badge, Input, Accordion, Drawer, Modal…
+  layout/     Navbar, Footer, botón flotante de WhatsApp
+  sections/   Secciones de la landing (Hero, Beneficios, Productos, FAQ…)
+  order/      Carrito: ProductCard, CartDrawer, QuantityStepper
+data/         Contenido editable (productos, textos, FAQs, marca)
+hooks/        useCart (estado global del pedido), useBodyScrollLock
+lib/          Utilidades: mensajes de pedido, variantes de animación, SEO
+public/       Imágenes optimizadas (WebP)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Cómo funcionan los pedidos
+
+1. El usuario agrega productos (desde las cards o el propio formulario).
+2. Completa nombre, teléfono, email, dirección y método de entrega.
+3. Al presionar **Enviar por WhatsApp** se abre `wa.me` con el pedido armado;
+   **Enviar por email** abre el cliente de correo con asunto y cuerpo listos.
+
+No hay backend ni pasarela de pago: el cierre de la venta ocurre en WhatsApp/email.
+
+## Build de producción
+
+```bash
+npm run build
+npm start
+```
