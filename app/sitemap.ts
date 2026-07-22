@@ -6,9 +6,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes: { path: string; priority: number }[] = [
     { path: "", priority: 1 },
     { path: "/productos", priority: 0.9 },
+    { path: "/coleccion", priority: 0.9 },
     { path: "/pedido", priority: 0.9 },
+    { path: "/como-pedir", priority: 0.8 },
     { path: "/origen", priority: 0.7 },
-    { path: "/faq", priority: 0.6 },
+    { path: "/contacto", priority: 0.8 },
+    { path: "/terminos", priority: 0.3 },
+    { path: "/condiciones", priority: 0.3 },
   ];
 
   return routes.map(({ path, priority }) => ({

@@ -3,32 +3,24 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeUp, VIEWPORT } from "@/lib/motion";
+import { useLocale } from "@/hooks/use-locale";
 
-const FLOW = [
-  {
-    title: "Calm, clear energy",
-    body: "L-theanine unlocks caffeine slowly — steady focus for hours, without jitters or crash.",
-    image: "/images/gallery-leaves.webp",
-    align: "start" as const,
-  },
-  {
-    title: "Whole-leaf nutrition",
-    body: "You drink the leaf itself. Concentrated antioxidants and catechins in every silky sip.",
-    image: "/images/hero-matcha.webp",
-    align: "end" as const,
-  },
-  {
-    title: "A daily pause",
-    body: "Three quiet minutes with a whisk and a bowl — ritual that resets body and mind.",
-    image: "/images/gallery-whisking.webp",
-    align: "start" as const,
-  },
+const FLOW_META = [
+  { image: "/images/gallery-leaves.webp", align: "start" as const },
+  { image: "/images/hero-matcha.webp", align: "end" as const },
+  { image: "/images/gallery-whisking.webp", align: "start" as const },
 ];
 
 export function Benefits() {
+  const { dict } = useLocale();
+  const flow = dict.benefits.items.map((item, i) => ({
+    ...item,
+    ...FLOW_META[i],
+  }));
+
   return (
-    <section id="benefits" aria-label="Benefits" className="overflow-x-clip py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="benefits" aria-label={dict.benefits.aria} className="overflow-x-clip py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -37,12 +29,12 @@ export function Benefits() {
           className="max-w-xl"
         >
           <p className="text-xs font-medium tracking-[0.22em] text-matcha-mid uppercase">
-            Experience
+            {dict.benefits.eyebrow}
           </p>
-          <h2 className="mt-4 font-serif text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-            Energize Your Day
+          <h2 className="mt-4 font-serif text-[1.75rem] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+            {dict.benefits.title}
             <br />
-            With Vibrant Matcha.
+            {dict.benefits.titleLine2}
           </h2>
         </motion.div>
 
@@ -62,7 +54,7 @@ export function Benefits() {
           </svg>
 
           <ul className="relative space-y-20 lg:space-y-28">
-            {FLOW.map((item) => (
+            {flow.map((item) => (
               <motion.li
                 key={item.title}
                 variants={fadeUp}

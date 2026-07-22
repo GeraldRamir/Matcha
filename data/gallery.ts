@@ -8,32 +8,32 @@ export type GalleryItem = {
 export const GALLERY: GalleryItem[] = [
   {
     src: "/images/gallery-field.webp",
-    alt: "Campos de té en Uji, Japón, al amanecer entre la niebla",
-    caption: "Los campos de Uji al amanecer",
+    alt: "Campos de té en Japón al amanecer",
+    caption: "Origen: Japón",
     aspect: "landscape",
   },
   {
     src: "/images/gallery-whisking.webp",
-    alt: "Manos batiendo matcha con un chasen de bambú en un bowl de cerámica",
-    caption: "El batido tradicional con chasen",
+    alt: "Manos batiendo matcha con un chasen de bambú",
+    caption: "El ritual de cada mañana",
     aspect: "portrait",
   },
   {
     src: "/images/gallery-sifting.webp",
-    alt: "Matcha siendo tamizado sobre un bowl de cerámica",
-    caption: "Tamizado fino, cero grumos",
+    alt: "Matcha siendo tamizado sobre un bowl",
+    caption: "Textura fina, cero grumos",
     aspect: "portrait",
   },
   {
     src: "/images/gallery-latte-art.webp",
-    alt: "Matcha latte con arte en la espuma sobre una mesa de roble",
-    caption: "Tu latte de cada mañana",
+    alt: "Matcha latte Solae con arte en la espuma",
+    caption: "Tu latte Solae",
     aspect: "landscape",
   },
   {
     src: "/images/gallery-leaves.webp",
-    alt: "Hojas de tencha frescas junto a un molino de piedra con matcha",
-    caption: "De la hoja tencha al polvo de jade",
+    alt: "Hojas de té junto a matcha en polvo",
+    caption: "De la hoja al polvo ceremonial",
     aspect: "portrait",
   },
 ];

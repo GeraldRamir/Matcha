@@ -4,17 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Leaf, Menu, ShoppingBag, X } from "lucide-react";
-import { NAV_LINKS, site } from "@/data/site";
+import { Menu, ShoppingBag, X } from "lucide-react";
+import { NAV_LINKS } from "@/data/site";
 import { useCart } from "@/hooks/use-cart";
+import { useLocale } from "@/hooks/use-locale";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useBodyScrollLock } from "@/hooks/use-body-scroll-lock";
+import { BrandLogo } from "@/components/layout/BrandLogo";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { count, openDrawer } = useCart();
+  const { t } = useLocale();
   const { scrollY } = useScroll();
   const pathname = usePathname();
 
@@ -29,7 +33,7 @@ export function Navbar() {
         href="#contenido"
         className="sr-only z-[110] bg-ink px-4 py-2 text-cream focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
       >
-        Skip to content
+        {t("common.skipToContent")}
       </a>
 
       <motion.header
@@ -46,17 +50,13 @@ export function Navbar() {
               : "border-transparent bg-cream"
           )}
         >
-          <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-[4.5rem] sm:px-8">
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-serif text-xl font-bold tracking-tight text-ink"
-              aria-label={`${site.name} — home`}
-            >
-              <Leaf className="h-5 w-5 text-matcha-mid" strokeWidth={1.75} />
-              Matcha
-            </Link>
+          <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-24 sm:gap-4 sm:px-8">
+            <BrandLogo variant="mark" className="h-12 w-12 rounded-full sm:h-16 sm:w-16" />
 
-            <nav aria-label="Primary" className="absolute left-1/2 hidden -translate-x-1/2 lg:block">
+            <nav
+              aria-label={t("common.primaryNav")}
+              className="absolute left-1/2 hidden -translate-x-1/2 lg:block"
+            >
               <ul className="flex items-center gap-0.5 text-[13px] text-ink-soft">
                 {NAV_LINKS.map((link, i) => {
                   const active =
@@ -78,7 +78,7 @@ export function Navbar() {
                           active && "font-medium text-ink"
                         )}
                       >
-                        {link.label}
+                        {t(link.labelKey)}
                       </Link>
                     </li>
                   );
@@ -86,10 +86,12 @@ export function Navbar() {
               </ul>
             </nav>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+              <LanguageSwitcher className="hidden sm:inline-flex" />
+
               <button
                 onClick={openDrawer}
-                aria-label={`Cart, ${count} items`}
+                aria-label={t("common.cartAria", { count })}
                 className="relative flex h-10 w-10 cursor-pointer items-center justify-center text-ink transition-opacity hover:opacity-70"
               >
                 <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
@@ -102,14 +104,14 @@ export function Navbar() {
 
               <Link
                 href="/pedido"
-                className="hidden h-10 items-center rounded-md bg-ink px-5 text-sm font-medium text-cream transition-colors hover:bg-matcha-deep sm:inline-flex"
+                className="hidden h-10 items-center rounded-md bg-matcha-deep px-5 text-sm font-medium text-gold transition-colors hover:bg-matcha sm:inline-flex"
               >
-                Buy Now
+                {t("nav.order")}
               </Link>
 
               <button
                 onClick={() => setMenuOpen(true)}
-                aria-label="Open menu"
+                aria-label={t("common.openMenu")}
                 aria-expanded={menuOpen}
                 className="flex h-10 w-10 cursor-pointer items-center justify-center text-ink lg:hidden"
               >
@@ -124,7 +126,7 @@ export function Navbar() {
         {menuOpen && (
           <div className="fixed inset-0 z-100 lg:hidden">
             <motion.button
-              aria-label="Close menu"
+              aria-label={t("common.closeMenu")}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -138,15 +140,18 @@ export function Navbar() {
               transition={{ duration: 0.45, ease: EASE }}
               className="absolute top-0 right-0 flex h-full w-[min(100%,20rem)] flex-col bg-cream p-6 shadow-lift"
             >
-              <div className="mb-10 flex items-center justify-between">
-                <span className="font-serif text-xl font-bold">Matcha</span>
+              <div className="mb-8 flex items-center justify-between">
+                <BrandLogo variant="mark" linked={false} className="h-12 w-12 rounded-full" />
                 <button
                   onClick={() => setMenuOpen(false)}
-                  aria-label="Close"
+                  aria-label={t("common.close")}
                   className="flex h-10 w-10 items-center justify-center"
                 >
                   <X className="h-5 w-5" />
                 </button>
+              </div>
+              <div className="mb-6">
+                <LanguageSwitcher />
               </div>
               <ul className="space-y-1">
                 {NAV_LINKS.map((link) => (
@@ -156,7 +161,7 @@ export function Navbar() {
                       onClick={() => setMenuOpen(false)}
                       className="block py-3 font-serif text-2xl text-ink"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -164,9 +169,9 @@ export function Navbar() {
               <Link
                 href="/pedido"
                 onClick={() => setMenuOpen(false)}
-                className="mt-auto flex h-12 items-center justify-center rounded-md bg-ink text-sm font-medium text-cream"
+                className="mt-auto flex h-12 items-center justify-center rounded-md bg-matcha-deep text-sm font-medium text-gold"
               >
-                Buy Now
+                {t("nav.orderNow")}
               </Link>
             </motion.nav>
           </div>

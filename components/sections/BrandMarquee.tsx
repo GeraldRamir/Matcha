@@ -1,14 +1,14 @@
 "use client";
 
 const ITEMS = [
-  "Uji First Flush",
-  "Stone Ground",
-  "Shade Grown 21 days",
-  "Ceremonial Grade",
-  "L-Theanine calm",
-  "Pay on arrival",
-  "24–48h delivery",
-  "WhatsApp order",
+  "Solae Matcha",
+  "Casa Solae",
+  "Producido en Japón",
+  "Empaque EE. UU.",
+  "República Dominicana",
+  "Grado ceremonial",
+  "Pedido por WhatsApp",
+  "Entrega 24–48 h",
 ];
 
 export function BrandMarquee() {

@@ -8,7 +8,7 @@ const ITEMS = [
   {
     icon: IconLeaf,
     title: "Origen único",
-    detail: "Uji, Japón · primera cosecha",
+    detail: "Japón · ceremonial premium",
   },
   {
     icon: IconShield,

@@ -1,22 +1,32 @@
 export const site = {
-  name: "KUMO Matcha",
-  shortName: "KUMO",
-  tagline: "Matcha ceremonial de Uji, Japón",
+  name: "Solae Matcha",
+  shortName: "Solae",
+  parentBrand: "Casa Solae",
+  tagline: "Matcha ceremonial premium · De Japón a República Dominicana",
   description:
-    "Matcha ceremonial de primera cosecha, cultivado a la sombra en Uji y molido en piedra. Energía calma, foco sostenido. Pedidos por WhatsApp o email.",
-  url: "https://kumomatcha.com",
-  whatsappNumber: "18095550123",
-  email: "pedidos@kumomatcha.com",
-  instagram: "https://instagram.com/kumomatcha",
-  address: "Santo Domingo, República Dominicana",
-  hours: "Lun – Sáb · 9:00 a. m. – 6:00 p. m.",
+    "Solae Matcha es la línea de matcha de Casa Solae: matcha premium ceremonial producido en Japón, empacado en Estados Unidos y comercializado en República Dominicana. Bienestar, calidad y un ritual de disfrute en cada taza.",
+  story:
+    "Solae Matcha surge de la pasión de su fundadora por el matcha y el bienestar. Es la línea de matcha de Casa Solae, creada para llevar la experiencia de nuestro matcha a cualquier lugar. Ofrecemos matcha premium ceremonial de alta calidad, cuidadosamente seleccionado para preparar bebidas con un sabor suave, vibrante y auténtico. Nuestro objetivo es que cada taza combine bienestar, calidad y un ritual de disfrute, ya sea en casa o donde prefieras.",
+  url: "https://solaematcha.com",
+  /** Placeholder — reemplazar por el número real de Casa Solae */
+  phone: "+18095550199",
+  phoneDisplay: "(809) 555-0199",
+  whatsappNumber: "18095550199",
+  email: "pedidos@solaematcha.com",
+  instagram: "https://www.instagram.com/casasolae.sdq/",
+  instagramHandle: "@casasolae.sdq",
+  address: "Casa Solae, C. José Amado Soler 8, Santo Domingo 10127, República Dominicana",
+  addressShort: "C. José Amado Soler 8, Santo Domingo 10127",
+  mapsUrl: "https://maps.app.goo.gl/ntrpHLkk9mQucjK7A",
+  mapsEmbedQuery:
+    "Casa Solae, C. José Amado Soler 8, Santo Domingo 10127, República Dominicana",
+  hours: "Pedidos y consultas por WhatsApp e Instagram",
 } as const;
 
-/** Landing nav — matches editorial reference structure */
 export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/productos", label: "Products" },
-  { href: "/#benefits", label: "Benefits" },
-  { href: "/origen", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/", labelKey: "nav.home" },
+  { href: "/productos", labelKey: "nav.products" },
+  { href: "/#benefits", labelKey: "nav.benefits" },
+  { href: "/origen", labelKey: "nav.about" },
+  { href: "/contacto", labelKey: "nav.contact" },
 ] as const;

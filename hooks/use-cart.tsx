@@ -10,6 +10,7 @@ import {
 } from "react";
 import type { CartItem } from "@/lib/order";
 import { cartCount, cartTotal } from "@/lib/order";
+import { useLocale } from "@/hooks/use-locale";
 
 type CartContextValue = {
   items: CartItem[];
@@ -27,6 +28,7 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { locale } = useLocale();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
@@ -62,7 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     () => ({
       items,
       count: cartCount(items),
-      total: cartTotal(items),
+      total: cartTotal(items, locale),
       isDrawerOpen,
       openDrawer,
       closeDrawer,
@@ -71,7 +73,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeItem,
       clear,
     }),
-    [items, isDrawerOpen, openDrawer, closeDrawer, addItem, setQuantity, removeItem, clear]
+    [items, locale, isDrawerOpen, openDrawer, closeDrawer, addItem, setQuantity, removeItem, clear]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

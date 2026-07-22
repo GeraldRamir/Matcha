@@ -5,32 +5,24 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { fadeUp, VIEWPORT } from "@/lib/motion";
+import { useLocale } from "@/hooks/use-locale";
 
-const NODES = [
-  {
-    title: "Shade-grown in Uji",
-    body: "Young spring leaves rest under shade for 21 days — deeper green, richer umami.",
-    image: "/images/gallery-field.webp",
-    side: "left" as const,
-  },
-  {
-    title: "Stone-milled slow",
-    body: "Granite mills turn tencha into powder without heat, protecting aroma and color.",
-    image: "/images/gallery-sifting.webp",
-    side: "right" as const,
-  },
-  {
-    title: "Whisked to silk",
-    body: "A few grams, hot water, and a bamboo chasen — foam as soft as velvet.",
-    image: "/images/gallery-whisking.webp",
-    side: "left" as const,
-  },
+const NODE_META = [
+  { image: "/images/gallery-field.webp", side: "left" as const },
+  { image: "/images/gallery-sifting.webp", side: "right" as const },
+  { image: "/images/gallery-whisking.webp", side: "left" as const },
 ];
 
 export function WhyMatcha() {
+  const { t, dict } = useLocale();
+  const nodes = dict.whyMatcha.nodes.map((node, i) => ({
+    ...node,
+    ...NODE_META[i],
+  }));
+
   return (
-    <section id="about-matcha" aria-labelledby="why-title" className="overflow-x-clip py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="about-matcha" aria-labelledby="why-title" className="overflow-x-clip py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -39,27 +31,25 @@ export function WhyMatcha() {
           className="mx-auto max-w-2xl text-center"
         >
           <p className="text-xs font-medium tracking-[0.22em] text-matcha-mid uppercase">
-            The Ritual
+            {dict.whyMatcha.eyebrow}
           </p>
           <h2
             id="why-title"
-            className="mt-4 font-serif text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl"
+            className="mt-4 font-serif text-[1.75rem] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl"
           >
-            Brewing Brilliance,
+            {dict.whyMatcha.title}
             <br />
-            Energizing Dreamers.
+            {dict.whyMatcha.titleLine2}
           </h2>
           <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-ink-soft sm:text-base">
-            From shaded Uji fields to your bowl — every step is slow, intentional,
-            and made for calm focus.
+            {dict.whyMatcha.body}
           </p>
         </motion.div>
 
         <div className="relative mt-16 sm:mt-20">
-          {/* Organic connecting path */}
           <svg
             aria-hidden
-            className="pointer-events-none absolute inset-0 hidden h-full w-full text-matcha/35 lg:block"
+            className="pointer-events-none absolute inset-0 hidden h-full w-full text-matcha/30 lg:block"
             viewBox="0 0 1000 900"
             fill="none"
             preserveAspectRatio="none"
@@ -68,7 +58,6 @@ export function WhyMatcha() {
               d="M180 80 C 320 140, 420 220, 520 280 S 720 360, 780 420 S 620 560, 420 620 S 220 720, 280 820"
               stroke="currentColor"
               strokeWidth="1.5"
-              strokeDasharray="0"
             />
             <circle cx="180" cy="80" r="4" fill="currentColor" />
             <circle cx="780" cy="420" r="4" fill="currentColor" />
@@ -76,7 +65,7 @@ export function WhyMatcha() {
           </svg>
 
           <ul className="relative space-y-16 lg:space-y-24">
-            {NODES.map((node, i) => (
+            {nodes.map((node, i) => (
               <motion.li
                 key={node.title}
                 variants={fadeUp}
@@ -98,7 +87,7 @@ export function WhyMatcha() {
                       className="object-cover transition-transform duration-700 hover:scale-105"
                     />
                   </div>
-                  <span className="absolute -top-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-matcha-deep font-serif text-sm text-cream">
+                  <span className="absolute -top-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-matcha-deep font-serif text-sm text-gold">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
@@ -131,7 +120,7 @@ export function WhyMatcha() {
             href="/origen"
             className="inline-flex items-center gap-2 text-sm font-semibold text-ink transition-colors hover:text-matcha-deep"
           >
-            Learn the full origin story
+            {t("whyMatcha.cta")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </motion.div>

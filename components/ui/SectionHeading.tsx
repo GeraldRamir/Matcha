@@ -44,7 +44,7 @@ export function SectionHeading({
       )}
       <motion.h2
         variants={fadeUp}
-        className="font-serif text-3xl font-bold tracking-tight text-balance text-ink sm:text-4xl lg:text-5xl"
+        className="font-serif text-[1.75rem] font-bold tracking-tight text-balance text-ink sm:text-4xl lg:text-5xl"
       >
         {scriptWord ? (
           <>

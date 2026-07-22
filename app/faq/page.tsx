@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Faq } from "@/components/sections/Faq";
-import { CtaBanner } from "@/components/sections/CtaBanner";
+import { FaqView } from "@/components/pages/FaqView";
 
 export const metadata: Metadata = {
   title: "Preguntas frecuentes",
@@ -11,15 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function FaqPage() {
-  return (
-    <>
-      <PageHeader
-        eyebrow="Preguntas frecuentes"
-        title="Todo lo que querías saber"
-        description="Y si tu pregunta no está aquí, escríbenos por WhatsApp: respondemos en minutos."
-      />
-      <Faq showHeading={false} />
-      <CtaBanner />
-    </>
-  );
+  return <FaqView />;
 }

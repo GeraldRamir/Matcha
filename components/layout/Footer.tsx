@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Leaf } from "lucide-react";
-import { NAV_LINKS, site } from "@/data/site";
+import { site } from "@/data/site";
 import { buildContactWhatsAppUrl } from "@/lib/order";
+import { useLocale } from "@/hooks/use-locale";
+import { BrandLogo } from "@/components/layout/BrandLogo";
+import { IconMail, IconWhatsApp } from "@/components/ui/icons";
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -16,135 +17,195 @@ function InstagramIcon({ className }: { className?: string }) {
   );
 }
 
-export function Footer() {
-  const [email, setEmail] = useState("");
-  const [done, setDone] = useState(false);
+function FooterColumn({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <h2 className="text-sm font-bold text-matcha-deep">{title}</h2>
+      <ul className="mt-5 space-y-3.5">{children}</ul>
+    </div>
+  );
+}
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setDone(true);
-    setEmail("");
-  };
+function FooterLink({
+  href,
+  label,
+  external,
+}: {
+  href: string;
+  label: string;
+  external?: boolean;
+}) {
+  const className =
+    "text-[15px] text-ink-faint transition-colors hover:text-matcha-deep";
+
+  if (external || href.startsWith("mailto:") || href.startsWith("http")) {
+    return (
+      <li>
+        <a
+          href={href}
+          className={className}
+          {...(href.startsWith("http")
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
+          {label}
+        </a>
+      </li>
+    );
+  }
 
   return (
-    <footer id="contact" className="border-t border-line bg-cream-soft">
-      <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
-        <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 font-serif text-2xl font-bold text-ink"
-            >
-              <Leaf className="h-5 w-5 text-matcha-mid" strokeWidth={1.75} />
-              Matcha
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-soft">
-              {site.tagline}
+    <li>
+      <Link href={href} className={className}>
+        {label}
+      </Link>
+    </li>
+  );
+}
+
+export function Footer() {
+  const year = new Date().getFullYear();
+  const { t, dict } = useLocale();
+
+  const productLinks = [
+    { href: "/", label: t("footer.home") },
+    { href: "/productos", label: t("footer.products") },
+    { href: "/#benefits", label: t("footer.benefits") },
+    { href: "/pedido", label: t("footer.placeOrder") },
+  ];
+
+  const resourceLinks = [
+    { href: "/origen", label: t("footer.origin") },
+    { href: "/coleccion", label: t("footer.collection") },
+    { href: "/como-pedir", label: t("footer.howToOrder") },
+  ];
+
+  const companyLinks = [
+    { href: "/origen", label: t("footer.aboutSolae") },
+    { href: `mailto:${site.email}`, label: t("common.email") },
+    {
+      href: buildContactWhatsAppUrl(dict.orderMsg.contactHello),
+      label: t("common.whatsapp"),
+      external: true,
+    },
+    { href: "/contacto", label: t("footer.contact") },
+  ];
+
+  return (
+    <footer
+      className="relative w-full overflow-hidden border-t border-line bg-cream"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-[28%] z-0 flex justify-center overflow-hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, transparent 0%, black 25%, black 55%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 0%, black 25%, black 55%, transparent 100%)",
+        }}
+      >
+        <p className="translate-y-[-18%] font-serif text-[min(38vw,18rem)] leading-none font-bold tracking-tight text-matcha-deep/[0.07] select-none">
+          Solae
+        </p>
+      </div>
+
+      <div className="relative z-10 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <div className="mx-auto grid w-full max-w-7xl gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.45fr_0.9fr_0.9fr_0.9fr] lg:gap-8 xl:gap-12">
+          <div className="max-w-md sm:col-span-2 lg:col-span-1">
+            <BrandLogo variant="combo" size="lg" className="max-w-full flex-wrap" />
+            <p className="mt-6 text-[15px] leading-relaxed text-ink-faint">
+              {t("footer.blurb")}
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-7 flex items-center gap-1">
               <a
                 href={site.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-matcha hover:text-matcha-deep"
+                className="flex h-10 w-10 items-center justify-center text-matcha-deep/55 transition-colors hover:text-matcha-deep"
               >
-                <InstagramIcon className="h-4 w-4" />
+                <InstagramIcon className="h-[1.15rem] w-[1.15rem]" />
               </a>
               <a
-                href={buildContactWhatsAppUrl()}
+                href={buildContactWhatsAppUrl(dict.orderMsg.contactHello)}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-xs font-semibold text-ink transition-colors hover:border-matcha hover:text-matcha-deep"
+                className="flex h-10 w-10 items-center justify-center text-matcha-deep/55 transition-colors hover:text-matcha-deep"
               >
-                WA
+                <IconWhatsApp className="h-[1.15rem] w-[1.15rem]" />
+              </a>
+              <a
+                href={`mailto:${site.email}`}
+                aria-label={t("common.email")}
+                className="flex h-10 w-10 items-center justify-center text-matcha-deep/55 transition-colors hover:text-matcha-deep"
+              >
+                <IconMail className="h-[1.15rem] w-[1.15rem]" />
               </a>
             </div>
           </div>
 
-          <nav aria-label="Explore">
-            <h2 className="text-xs font-medium tracking-[0.2em] text-matcha-mid uppercase">
-              Explore
-            </h2>
-            <ul className="mt-5 space-y-3">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-ink-soft transition-colors hover:text-ink"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/pedido"
-                  className="text-sm text-ink-soft transition-colors hover:text-ink"
-                >
-                  Order
-                </Link>
-              </li>
-            </ul>
-          </nav>
+          <FooterColumn title={t("footer.product")}>
+            {productLinks.map((link) => (
+              <FooterLink key={link.href + link.label} {...link} />
+            ))}
+          </FooterColumn>
 
-          <div>
-            <h2 className="text-xs font-medium tracking-[0.2em] text-matcha-mid uppercase">
-              Contact
-            </h2>
-            <ul className="mt-5 space-y-3 text-sm text-ink-soft">
-              <li>
-                <a
-                  href={`mailto:${site.email}`}
-                  className="transition-colors hover:text-ink"
-                >
-                  {site.email}
-                </a>
-              </li>
-              <li>{site.hours}</li>
-              <li>{site.address}</li>
-            </ul>
-          </div>
+          <FooterColumn title={t("footer.resources")}>
+            {resourceLinks.map((link) => (
+              <FooterLink key={link.href + link.label} {...link} />
+            ))}
+          </FooterColumn>
 
-          <div>
-            <h2 className="text-xs font-medium tracking-[0.2em] text-matcha-mid uppercase">
-              Newsletter
-            </h2>
-            <p className="mt-5 text-sm text-ink-soft">
-              Ritual tips and early access to new harvests.
-            </p>
-            <form onSubmit={onSubmit} className="mt-4 flex gap-2">
-              <label htmlFor="footer-email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="footer-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@email.com"
-                className="h-11 min-w-0 flex-1 rounded-md border border-line bg-surface px-3 text-sm text-ink outline-none placeholder:text-ink-faint focus:border-matcha"
+          <FooterColumn title={t("footer.company")}>
+            {companyLinks.map((link) => (
+              <FooterLink
+                key={link.href + link.label}
+                href={link.href}
+                label={link.label}
+                external={"external" in link ? link.external : false}
               />
-              <button
-                type="submit"
-                className="h-11 shrink-0 rounded-md bg-ink px-4 text-sm font-medium text-cream transition-colors hover:bg-matcha-deep"
-              >
-                Join
-              </button>
-            </form>
-            {done && (
-              <p className="mt-2 text-xs text-matcha-deep">Thanks — you&apos;re on the list.</p>
-            )}
-          </div>
+            ))}
+          </FooterColumn>
         </div>
 
-        <div className="mt-16 flex flex-col gap-2 border-t border-line pt-8 sm:flex-row sm:justify-between">
-          <p className="text-xs text-ink-faint">
-            © {new Date().getFullYear()} {site.name}
+        <div className="mx-auto mt-12 flex w-full max-w-7xl flex-col gap-4 border-t border-line pt-6 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-ink-faint">
+            © {year} {site.name}. {t("footer.rights")}
           </p>
-          <p className="text-xs text-ink-faint">Crafted with calm · Uji first flush</p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-faint">
+            <li>
+              <Link
+                href="/condiciones"
+                className="underline decoration-matcha-200 underline-offset-4 transition-colors hover:text-matcha-deep hover:decoration-matcha-deep"
+              >
+                {t("footer.conditions")}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/terminos"
+                className="underline decoration-matcha-200 underline-offset-4 transition-colors hover:text-matcha-deep hover:decoration-matcha-deep"
+              >
+                {t("footer.terms")}
+              </Link>
+            </li>
+            <li>
+              <a
+                href={`mailto:${site.email}`}
+                className="underline decoration-matcha-200 underline-offset-4 transition-colors hover:text-matcha-deep hover:decoration-matcha-deep"
+              >
+                {t("footer.contact")}
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

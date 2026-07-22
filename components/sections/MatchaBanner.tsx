@@ -39,7 +39,7 @@ export function MatchaBanner() {
               Vibrant matcha, quiet energy
             </p>
             <p className="mt-3 text-sm text-cream/70">
-              Del campo de Uji a tu ritual diario.
+              De Japón a tu ritual diario.
             </p>
             <ButtonNav
               href="/pedido"

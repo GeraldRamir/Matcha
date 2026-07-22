@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { OrderForm } from "@/components/sections/OrderForm";
-import { OrderProcess } from "@/components/sections/OrderProcess";
+import { PedidoView } from "@/components/pages/PedidoView";
 
 export const metadata: Metadata = {
   title: "Haz tu pedido",
@@ -11,15 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function PedidoPage() {
-  return (
-    <>
-      <PageHeader
-        eyebrow="Pedido"
-        title="Pide tu matcha en minutos"
-        description="Elige productos, completa unos datos y envíanos el pedido por WhatsApp o email. Se abre con el mensaje listo — tú solo confirmas."
-      />
-      <OrderForm showHeading={false} />
-      <OrderProcess showCta={false} />
-    </>
-  );
+  return <PedidoView />;
 }

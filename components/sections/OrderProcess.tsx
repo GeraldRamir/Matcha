@@ -3,51 +3,40 @@
 import { motion } from "framer-motion";
 import { MessageCircle, Package, UserRound } from "lucide-react";
 import { fadeUp, staggerContainer, VIEWPORT } from "@/lib/motion";
+import { useLocale } from "@/hooks/use-locale";
 
-const STEPS = [
-  {
-    title: "Elige tu matcha",
-    description: "Agrega productos desde esta página. Sin cuenta ni registro.",
-    icon: Package,
-  },
-  {
-    title: "Completa tus datos",
-    description: "Nombre, teléfono y si quieres envío o retiro personal.",
-    icon: UserRound,
-  },
-  {
-    title: "Envía por WhatsApp o email",
-    description:
-      "Un clic abre el mensaje con tu pedido listo. Nosotros confirmamos en minutos.",
-    icon: MessageCircle,
-  },
-];
+const STEP_ICONS = [Package, UserRound, MessageCircle];
 
 type OrderProcessProps = { showCta?: boolean };
 
 export function OrderProcess({ showCta = true }: OrderProcessProps) {
+  const { dict } = useLocale();
+  const steps = dict.orderProcess.steps.map((step, i) => ({
+    ...step,
+    icon: STEP_ICONS[i],
+  }));
+
   return (
-    <section aria-labelledby="proceso-title" className="border-t border-line bg-cream-soft py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section aria-labelledby="proceso-title" className="border-t border-line bg-cream-soft py-14 sm:py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
-          className="mx-auto mb-14 max-w-2xl text-center"
+          className="mx-auto mb-10 max-w-2xl text-center sm:mb-14"
         >
           <p className="text-xs font-medium tracking-[0.22em] text-matcha-mid uppercase">
-            Cómo funciona
+            {dict.orderProcess.eyebrow}
           </p>
           <h2
             id="proceso-title"
-            className="mt-4 font-serif text-3xl font-bold tracking-tight text-ink sm:text-4xl"
+            className="mt-4 font-serif text-[1.75rem] font-bold tracking-tight text-ink sm:text-4xl"
           >
-            Pedir es simple
+            {dict.orderProcess.title}
           </h2>
           <p className="mt-4 text-ink-soft">
-            No hay carrito de pago online. El pedido sale de tu web directo a
-            nuestro WhatsApp o correo.
+            {dict.orderProcess.body}
           </p>
         </motion.div>
 
@@ -58,7 +47,7 @@ export function OrderProcess({ showCta = true }: OrderProcessProps) {
           viewport={VIEWPORT}
           className="grid gap-8 sm:grid-cols-3"
         >
-          {STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <motion.li key={step.title} variants={fadeUp} className="text-center sm:text-left">
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-matcha-100 text-matcha-deep sm:mx-0">
                 <step.icon className="h-5 w-5" strokeWidth={1.5} />
@@ -81,10 +70,10 @@ export function OrderProcess({ showCta = true }: OrderProcessProps) {
             className="mt-14 text-center"
           >
             <a
-              href="#pedido"
+              href="/pedido"
               className="inline-flex h-12 items-center justify-center rounded-md bg-ink px-8 text-sm font-semibold text-cream transition-colors hover:bg-matcha-deep"
             >
-              Empezar mi pedido
+              {dict.orderProcess.start}
             </a>
           </motion.div>
         )}

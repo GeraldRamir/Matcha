@@ -50,7 +50,7 @@ export function Drawer({ open, onClose, title, children, side = "right" }: Drawe
             animate={{ x: 0 }}
             exit={{ x: side === "right" ? "100%" : "-100%" }}
             transition={{ duration: 0.45, ease: EASE }}
-            className={`absolute top-0 bottom-0 flex w-full max-w-md flex-col bg-cream shadow-lift outline-none ${
+            className={`absolute top-0 bottom-0 flex w-full max-w-md flex-col bg-cream shadow-lift outline-none max-sm:max-w-none ${
               side === "right" ? "right-0" : "left-0"
             }`}
           >

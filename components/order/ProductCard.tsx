@@ -6,8 +6,9 @@ import { useState } from "react";
 import { Check, Minus, Plus, ShoppingBag, Star } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/hooks/use-cart";
+import { useLocale } from "@/hooks/use-locale";
 import { fadeUp } from "@/lib/motion";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getProductPrice } from "@/lib/utils";
 
 /** Floating garnish particles — matcha leaves / powder flecks around the cutout. */
 function FloatingDetails() {
@@ -38,8 +39,10 @@ function FloatingDetails() {
  */
 export function ProductCard({ product }: { product: Product }) {
   const { addItem, openDrawer } = useCart();
+  const { locale } = useLocale();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const price = getProductPrice(product, locale);
 
   const handleAdd = () => {
     addItem(product.id, qty);
@@ -108,7 +111,7 @@ export function ProductCard({ product }: { product: Product }) {
             <circle cx="5" cy="16" r="3.5" className="fill-cream" />
           </svg>
           <span className="inline-flex rounded-full bg-cream px-3.5 py-1.5 text-sm font-bold tracking-tight text-stage shadow-soft">
-            {formatPrice(product.price)}
+            {formatPrice(price, locale)}
           </span>
         </div>
       </div>

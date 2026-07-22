@@ -4,8 +4,6 @@ import { WhyMatcha } from "@/components/sections/WhyMatcha";
 import { Products } from "@/components/sections/Products";
 import { GreenBanner } from "@/components/sections/GreenBanner";
 import { Benefits } from "@/components/sections/Benefits";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { FinalCta } from "@/components/sections/FinalCta";
 
 export default function Home() {
   return (
@@ -16,8 +14,6 @@ export default function Home() {
       <Products featured />
       <GreenBanner />
       <Benefits />
-      <Testimonials />
-      <FinalCta />
     </>
   );
 }

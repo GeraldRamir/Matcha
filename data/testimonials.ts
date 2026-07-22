@@ -10,7 +10,7 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Valeria Gómez",
     role: "Fundadora de estudio de yoga",
     quote:
-      "Dejé el café hace seis meses y no miro atrás. La energía es completamente distinta: estable, sin ansiedad y sin el bajón de las 3 p. m. El Ceremonial Uji es otro nivel.",
+      "Dejé el café hace seis meses y no miro atrás. La energía es completamente distinta: estable, sin ansiedad y sin el bajón de las 3 p. m. El Ceremonial Premium de Solae es otro nivel.",
     rating: 5,
   },
   {
@@ -31,21 +31,21 @@ export const TESTIMONIALS: Testimonial[] = [
     name: "Andrés Peralta",
     role: "Chef pastelero",
     quote:
-      "Uso el Blend para Latte en mi carta de bebidas y postres. El sabor se mantiene incluso horneado. Mis clientes preguntan por la marca cada semana.",
+      "Uso el Premium Ceremonial en mi carta de bebidas y postres. El sabor se mantiene incluso horneado. Mis clientes preguntan por la marca cada semana.",
     rating: 5,
   },
   {
     name: "Sofía Martínez",
     role: "Corredora amateur",
     quote:
-      "Mi pre-entreno ahora es un matcha batido en agua fría. Energía limpia por horas, sin taquicardia. El kit ceremonial convirtió mi mañana en un ritual que disfruto.",
+      "Mi pre-entreno ahora es un matcha batido en agua fría. Energía limpia por horas, sin taquicardia. El ceremonial convirtió mi mañana en un ritual que disfruto.",
     rating: 5,
   },
   {
     name: "Luis Fernández",
     role: "Ingeniero de software",
     quote:
-      "Pedí un viernes por la noche y el sábado ya lo tenía. La atención por WhatsApp es rápida y humana. El Blend Diario tiene la mejor relación calidad-precio que probé.",
+      "Pedí un viernes por la noche y el sábado ya lo tenía. La atención por WhatsApp es rápida y humana. El Premium Ceremonial tiene la mejor relación calidad-precio que probé.",
     rating: 5,
   },
 ];

@@ -2,37 +2,39 @@
 
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Trash2 } from "lucide-react";
-import { getProduct } from "@/data/products";
+import { getLocalizedProduct } from "@/lib/i18n/products";
 import { useCart } from "@/hooks/use-cart";
 import { formatPrice } from "@/lib/utils";
 import { Drawer } from "@/components/ui/Drawer";
 import { QuantityStepper } from "@/components/order/QuantityStepper";
+import { useLocale } from "@/hooks/use-locale";
 
 export function CartDrawer() {
   const { items, total, isDrawerOpen, closeDrawer, setQuantity, removeItem } = useCart();
+  const { t, dict, locale } = useLocale();
 
   return (
-    <Drawer open={isDrawerOpen} onClose={closeDrawer} title="Tu pedido">
+    <Drawer open={isDrawerOpen} onClose={closeDrawer} title={dict.cart.title}>
       {items.length === 0 ? (
         <div className="flex h-full flex-col items-center justify-center gap-4 px-8 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-matcha-50 text-matcha-deep">
             <ShoppingBag className="h-7 w-7" strokeWidth={1.5} />
           </div>
-          <p className="font-serif text-xl font-bold text-ink">Tu pedido está vacío</p>
-          <p className="text-sm text-ink-soft">Agrega productos y completa en un clic.</p>
+          <p className="font-serif text-xl font-bold text-ink">{dict.cart.emptyTitle}</p>
+          <p className="text-sm text-ink-soft">{dict.cart.emptyBody}</p>
           <a
             href="/productos"
             onClick={closeDrawer}
             className="mt-2 inline-flex h-10 items-center rounded-md border border-line px-5 text-sm font-medium text-ink transition-colors hover:border-matcha-deep hover:bg-matcha-deep hover:text-cream"
           >
-            Ver productos
+            {dict.cart.viewProducts}
           </a>
         </div>
       ) : (
         <div className="flex h-full flex-col">
           <ul className="flex-1 divide-y divide-line px-6">
             {items.map((item) => {
-              const product = getProduct(item.productId);
+              const product = getLocalizedProduct(item.productId, dict, locale);
               if (!product) return null;
               return (
                 <li key={item.productId} className="flex gap-4 py-5">
@@ -56,7 +58,7 @@ export function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => removeItem(item.productId)}
-                        aria-label={`Eliminar ${product.name}`}
+                        aria-label={t("common.removeAria", { name: product.name })}
                         className="cursor-pointer text-ink-faint transition-colors hover:text-red-600"
                       >
                         <Trash2 className="h-4 w-4" strokeWidth={1.5} />
@@ -69,7 +71,7 @@ export function CartDrawer() {
                         label={product.name}
                       />
                       <p className="text-sm font-semibold tabular-nums text-ink">
-                        {formatPrice(product.price * item.quantity)}
+                        {formatPrice(product.price * item.quantity, locale)}
                       </p>
                     </div>
                   </div>
@@ -79,9 +81,9 @@ export function CartDrawer() {
           </ul>
           <div className="border-t border-line bg-cream-soft/80 px-6 py-6">
             <div className="mb-4 flex items-center justify-between">
-              <span className="text-sm text-ink-soft">Total estimado</span>
+              <span className="text-sm text-ink-soft">{dict.cart.estimatedTotal}</span>
               <span className="font-serif text-2xl font-bold tabular-nums text-ink">
-                {formatPrice(total)}
+                {formatPrice(total, locale)}
               </span>
             </div>
             <a
@@ -89,11 +91,11 @@ export function CartDrawer() {
               onClick={closeDrawer}
               className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-ink text-sm font-semibold text-cream transition-colors hover:bg-matcha-deep"
             >
-              Completar pedido
+              {dict.cart.completeOrder}
               <ArrowRight className="h-4 w-4" />
             </a>
             <p className="mt-3 text-center text-xs text-ink-faint">
-              Enviarás el pedido por WhatsApp o email.
+              {dict.cart.sendHint}
             </p>
           </div>
         </div>

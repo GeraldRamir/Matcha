@@ -8,13 +8,20 @@ import { fadeUp, staggerContainer, VIEWPORT } from "@/lib/motion";
 import { Modal } from "@/components/ui/Modal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/hooks/use-locale";
 
 export function Gallery() {
+  const { dict } = useLocale();
   const [active, setActive] = useState<GalleryItem | null>(null);
+  const gallery = GALLERY.map((item, i) => ({
+    ...item,
+    alt: dict.gallery.items[i]?.alt ?? item.alt,
+    caption: dict.gallery.items[i]?.caption ?? item.caption,
+  }));
 
   return (
-    <section aria-labelledby="galeria-title" className="bg-surface py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section aria-labelledby="galeria-title" className="bg-surface py-16 sm:py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <SectionHeading
           eyebrow="Portfolio"
           title="El verde que se ve antes de"
@@ -27,9 +34,9 @@ export function Gallery() {
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
-          className="columns-2 gap-4 space-y-4 lg:columns-3 [&>li]:break-inside-avoid"
+          className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3 [&>li]:break-inside-avoid"
         >
-          {GALLERY.map((item) => (
+          {gallery.map((item) => (
             <motion.li key={item.src} variants={fadeUp}>
               <button
                 onClick={() => setActive(item)}

@@ -13,7 +13,7 @@ export function buildJsonLd() {
         url: site.url,
         email: site.email,
         description: site.description,
-        logo: `${site.url}/images/product-ceremonial.webp`,
+        logo: `${site.url}/images/brand/solae-logo-512.png`,
         sameAs: [site.instagram],
       },
       {
@@ -44,7 +44,7 @@ export function buildJsonLd() {
             },
             offers: {
               "@type": "Offer",
-              price: product.price,
+              price: product.priceUsd,
               priceCurrency: "USD",
               availability:
                 product.stock === "low-stock"

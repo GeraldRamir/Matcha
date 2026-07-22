@@ -11,33 +11,33 @@ type PageHeaderProps = {
 
 export function PageHeader({ eyebrow, title, description }: PageHeaderProps) {
   return (
-    <header className="relative overflow-hidden pt-28 pb-10 sm:pt-32 sm:pb-14">
+    <header className="relative overflow-hidden pt-24 pb-8 sm:pt-32 sm:pb-14">
       <div
         aria-hidden
-        className="pointer-events-none absolute top-0 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-matcha/15 blur-3xl"
+        className="pointer-events-none absolute top-0 left-1/2 h-48 w-[min(100vw,36rem)] -translate-x-1/2 rounded-full bg-matcha/15 blur-3xl sm:h-64"
       />
       <motion.div
         variants={staggerContainer(0.1)}
         initial="hidden"
         animate="visible"
-        className="relative mx-auto max-w-7xl px-5 sm:px-8"
+        className="relative mx-auto max-w-7xl px-4 sm:px-8"
       >
         <motion.p
           variants={fadeUp}
-          className="text-xs font-medium tracking-[0.22em] text-matcha-mid uppercase"
+          className="text-[11px] font-medium tracking-[0.2em] text-matcha-mid uppercase sm:text-xs sm:tracking-[0.22em]"
         >
           {eyebrow}
         </motion.p>
         <motion.h1
           variants={fadeUp}
-          className="mt-4 max-w-3xl font-serif text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl"
+          className="mt-3 max-w-3xl font-serif text-[1.85rem] leading-tight font-bold tracking-tight text-ink sm:mt-4 sm:text-5xl lg:text-6xl"
         >
           {title}
         </motion.h1>
         {description && (
           <motion.p
             variants={fadeUp}
-            className="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg"
+            className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-soft sm:mt-5 sm:text-lg"
           >
             {description}
           </motion.p>
