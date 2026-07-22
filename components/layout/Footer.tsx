@@ -119,7 +119,7 @@ export function Footer() {
       <div className="relative z-10 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto grid w-full max-w-7xl gap-10 sm:grid-cols-2 sm:gap-12 lg:grid-cols-[1.45fr_0.9fr_0.9fr_0.9fr] lg:gap-8 xl:gap-12">
           <div className="max-w-md sm:col-span-2 lg:col-span-1">
-            <BrandLogo variant="combo" size="lg" className="max-w-full flex-wrap" />
+            <BrandLogo variant="mark" size="lg" />
             <p className="mt-6 text-[15px] leading-relaxed text-ink-faint">
               {t("footer.blurb")}
             </p>

@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { fadeUp, staggerContainer, VIEWPORT } from "@/lib/motion";
+import { GsapReveal } from "@/components/ui/GsapReveal";
 import { cn } from "@/lib/utils";
 
 type SectionHeadingProps = {
@@ -22,47 +21,47 @@ export function SectionHeading({
   scriptWord,
 }: SectionHeadingProps) {
   return (
-    <motion.div
-      variants={staggerContainer(0.1)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT}
+    <GsapReveal
       className={cn(
         "mb-12 md:mb-16",
         align === "center" && "mx-auto max-w-2xl text-center",
         align === "left" && "max-w-2xl",
         className
       )}
+      childSelector="[data-reveal]"
+      stagger={0.1}
     >
       {eyebrow && (
-        <motion.p
-          variants={fadeUp}
+        <p
+          data-reveal
           className="mb-3 text-xs font-medium tracking-[0.25em] text-olive uppercase"
         >
           {eyebrow}
-        </motion.p>
+        </p>
       )}
-      <motion.h2
-        variants={fadeUp}
+      <h2
+        data-reveal
         className="font-serif text-[1.75rem] font-bold tracking-tight text-balance text-ink sm:text-4xl lg:text-5xl"
       >
         {scriptWord ? (
           <>
             {title}{" "}
-            <span className="font-script text-[1.15em] text-forest-mid">{scriptWord}</span>
+            <span className="font-script text-[1.15em] text-forest-mid">
+              {scriptWord}
+            </span>
           </>
         ) : (
           title
         )}
-      </motion.h2>
+      </h2>
       {description && (
-        <motion.p
-          variants={fadeUp}
+        <p
+          data-reveal
           className="mt-4 text-base leading-relaxed text-pretty text-ink-soft sm:text-lg"
         >
           {description}
-        </motion.p>
+        </p>
       )}
-    </motion.div>
+    </GsapReveal>
   );
 }

@@ -8,11 +8,10 @@ export const site = {
   story:
     "Solae Matcha surge de la pasión de su fundadora por el matcha y el bienestar. Es la línea de matcha de Casa Solae, creada para llevar la experiencia de nuestro matcha a cualquier lugar. Ofrecemos matcha premium ceremonial de alta calidad, cuidadosamente seleccionado para preparar bebidas con un sabor suave, vibrante y auténtico. Nuestro objetivo es que cada taza combine bienestar, calidad y un ritual de disfrute, ya sea en casa o donde prefieras.",
   url: "https://solaematcha.com",
-  /** Placeholder — reemplazar por el número real de Casa Solae */
-  phone: "+18095550199",
-  phoneDisplay: "(809) 555-0199",
-  whatsappNumber: "18095550199",
-  email: "pedidos@solaematcha.com",
+  phone: "+18497530992",
+  phoneDisplay: "849-753-0992",
+  whatsappNumber: "18497530992",
+  email: "info.casasolae@gmail.com",
   instagram: "https://www.instagram.com/casasolae.sdq/",
   instagramHandle: "@casasolae.sdq",
   address: "Casa Solae, C. José Amado Soler 8, Santo Domingo 10127, República Dominicana",

@@ -1,42 +1,13 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import CountUp from "react-countup";
 import { useEffect, useRef } from "react";
-import { fadeUp, staggerContainer, VIEWPORT } from "@/lib/motion";
+import { Leaf, MapPin, Package, Sparkles } from "lucide-react";
+import { GsapReveal } from "@/components/ui/GsapReveal";
 import { useLocale } from "@/hooks/use-locale";
 
-const STATS = [
-  { end: 30, suffix: "K+" },
-  { end: 80, suffix: "K+" },
-  { end: 98, suffix: "%" },
-  { end: 100, suffix: "%" },
-];
+const VIDEO_SRC = "/images/Productos/solae-ritual.mp4";
 
-const VIDEO_SRC =
-  "/images/Productos/Matcha_powder_explodes_into_tin_202607212137.mp4";
-
-function StatItem({
-  end,
-  suffix,
-  label,
-}: {
-  end: number;
-  suffix: string;
-  label: string;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-
-  return (
-    <div ref={ref}>
-      <p className="font-serif text-2xl font-bold tracking-tight text-ink sm:text-5xl">
-        {inView ? <CountUp end={end} duration={1.8} suffix={suffix} /> : `0${suffix}`}
-      </p>
-      <p className="mt-1.5 text-xs font-medium text-ink-faint sm:mt-2 sm:text-sm">{label}</p>
-    </div>
-  );
-}
+const PILLAR_ICONS = [Leaf, Package, MapPin, Sparkles];
 
 function StatsVideo({ videoAria }: { videoAria: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -52,21 +23,18 @@ function StatsVideo({ videoAria }: { videoAria: string }) {
         if (entry.isIntersecting) void video.play().catch(() => {});
         else video.pause();
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
     io.observe(wrap);
     return () => io.disconnect();
   }, []);
 
   return (
-    <div
-      ref={wrapRef}
-      className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-ink sm:aspect-[3/4] lg:aspect-auto lg:h-full lg:min-h-[24rem]"
-    >
+    <div ref={wrapRef} className="absolute inset-0 overflow-hidden bg-matcha-deep">
       <video
         ref={videoRef}
         src={VIDEO_SRC}
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full scale-[1.02] object-cover object-center"
         autoPlay
         muted
         loop
@@ -74,54 +42,87 @@ function StatsVideo({ videoAria }: { videoAria: string }) {
         preload="metadata"
         aria-label={videoAria}
       />
+      {/* Soften into cream copy column */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-0 hidden w-28 bg-gradient-to-r from-cream via-cream/75 to-transparent lg:block"
+      />
+      {/* Mobile: blend into cream above */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-gradient-to-b from-cream via-cream/60 to-transparent lg:hidden"
+      />
+      {/* Subtle depth at edges */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-matcha-deep/25 via-transparent to-transparent"
+      />
     </div>
   );
 }
 
 export function Stats() {
   const { dict } = useLocale();
-  const items = STATS.map((s, i) => ({ ...s, label: dict.stats.items[i].label }));
+  const pillars = dict.stats.items.map((item, i) => ({
+    ...item,
+    icon: PILLAR_ICONS[i] ?? Sparkles,
+  }));
 
   return (
-    <section aria-label={dict.stats.aria} className="border-y border-line py-12 sm:py-16 lg:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8">
-        <motion.div
-          variants={staggerContainer(0.1)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={VIEWPORT}
-          className="grid items-stretch gap-10 lg:grid-cols-[1.2fr_1fr]"
+    <section
+      aria-label={dict.stats.aria}
+      className="overflow-hidden border-y border-line bg-cream"
+    >
+      <div className="grid lg:grid-cols-2">
+        <GsapReveal
+          className="relative z-10 flex justify-center bg-cream px-4 py-12 sm:px-8 sm:py-16 lg:justify-end lg:py-20 lg:pr-10 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+          childSelector="[data-reveal]"
+          stagger={0.1}
         >
-          <motion.div variants={fadeUp}>
-            <h2 className="max-w-lg font-serif text-[1.75rem] leading-tight font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+          <div className="w-full max-w-xl">
+            <h2
+              data-reveal
+              className="max-w-lg font-serif text-[1.75rem] leading-tight font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl"
+            >
               {dict.stats.title}
             </h2>
-            <div className="mt-8 grid grid-cols-2 gap-5 sm:mt-10 sm:grid-cols-4 sm:gap-6">
-              {items.map((s) => (
-                <StatItem key={s.label} {...s} />
-              ))}
-            </div>
-            <div className="mt-8 flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {["V", "D", "C", "S"].map((i) => (
-                  <span
-                    key={i}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-cream bg-matcha-100 text-xs font-semibold text-matcha-deep"
-                  >
-                    {i}
-                  </span>
-                ))}
-              </div>
-              <p className="text-sm font-medium text-ink-soft">
-                {dict.stats.lovedBy}
-              </p>
-            </div>
-          </motion.div>
+            <p
+              data-reveal
+              className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-soft sm:text-base"
+            >
+              {dict.stats.body}
+            </p>
 
-          <motion.div variants={fadeUp} className="h-full min-h-[18rem]">
-            <StatsVideo videoAria={dict.stats.videoAria} />
-          </motion.div>
-        </motion.div>
+            <ul className="mt-8 grid gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6">
+              {pillars.map((item) => (
+                <li key={item.title} data-reveal className="flex gap-3">
+                  <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gold text-matcha-deep">
+                    <item.icon className="h-5 w-5" strokeWidth={1.5} />
+                  </span>
+                  <span>
+                    <span className="block font-serif text-lg font-bold text-ink">
+                      {item.title}
+                    </span>
+                    <span className="mt-1 block text-sm leading-relaxed text-ink-faint">
+                      {item.detail}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <p
+              data-reveal
+              className="mt-8 text-sm font-medium tracking-[0.14em] text-matcha-mid uppercase"
+            >
+              {dict.stats.route}
+            </p>
+          </div>
+        </GsapReveal>
+
+        <GsapReveal className="relative min-h-[22rem] w-full sm:min-h-[28rem] lg:min-h-0 lg:self-stretch">
+          <StatsVideo videoAria={dict.stats.videoAria} />
+        </GsapReveal>
       </div>
     </section>
   );

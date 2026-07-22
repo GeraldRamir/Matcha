@@ -2,13 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
-import { fadeUp, VIEWPORT, EASE } from "@/lib/motion";
 import { cn, formatPrice } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, GSAP_EASE } from "@/lib/gsap";
+import { GsapReveal } from "@/components/ui/GsapReveal";
 import { useLocale } from "@/hooks/use-locale";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import {
   getLocalizedProducts,
   type LocalizedProduct,
@@ -55,6 +57,10 @@ function CenterArcCarousel({
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const compact = useIsCompact();
+  const reduced = usePrefersReducedMotion();
+  const stageRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const glowRef = useRef<HTMLDivElement>(null);
   const n = images.length;
   const arcSpan = compact ? ARC_SPAN_MOBILE : ARC_SPAN_DESKTOP;
 
@@ -65,6 +71,98 @@ function CenterArcCarousel({
     }, AUTO_MS);
     return () => window.clearInterval(id);
   }, [paused, n]);
+
+  useGSAP(
+    () => {
+      const glow = glowRef.current;
+      if (glow && !reduced) {
+        gsap.fromTo(
+          glow,
+          { scaleX: 1, opacity: 0.28 },
+          {
+            scaleX: 1.08,
+            opacity: 0.5,
+            duration: 1.9,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          }
+        );
+      }
+
+      images.forEach((_, i) => {
+        const el = itemRefs.current[i];
+        if (!el) return;
+
+        const offset = circularOffset(i, active, n);
+        const abs = Math.abs(offset);
+        const isCenter = offset === 0;
+        const visible = Math.abs(offset) <= arcSpan;
+
+        if (!visible) {
+          gsap.set(el, { autoAlpha: 0, pointerEvents: "none" });
+          return;
+        }
+
+        const spacing = compact ? 96 : 170;
+        const arcDepth = compact ? 60 : 85;
+        const arcLift = compact ? 8 : 12;
+        const x = offset * spacing;
+        const z = -abs * abs * arcDepth * 0.55;
+        const yBase = abs * abs * arcLift;
+        const rotateY = offset * (compact ? -32 : -42);
+        const scale = isCenter
+          ? compact
+            ? 1.02
+            : 1.22
+          : Math.max(0.68, (compact ? 0.86 : 0.92) - abs * 0.12);
+
+        gsap.killTweensOf(el);
+
+        if (reduced) {
+          gsap.set(el, {
+            x,
+            y: yBase,
+            z,
+            rotateY,
+            scale,
+            autoAlpha: 1,
+            zIndex: isCenter ? 40 : 20 - abs,
+            pointerEvents: "auto",
+          });
+          return;
+        }
+
+        gsap.to(el, {
+          x,
+          y: yBase,
+          z,
+          rotateY,
+          scale,
+          autoAlpha: 1,
+          zIndex: isCenter ? 40 : 20 - abs,
+          pointerEvents: "auto",
+          duration: 0.75,
+          ease: GSAP_EASE,
+          overwrite: "auto",
+          onComplete: () => {
+            if (!isCenter) return;
+            gsap.to(el, {
+              y: yBase + 6,
+              duration: 1.9,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+            });
+          },
+        });
+      });
+    },
+    {
+      scope: stageRef,
+      dependencies: [active, compact, n, arcSpan, reduced, images],
+    }
+  );
 
   const prev = () => setActive((i) => (i - 1 + n) % n);
   const next = () => setActive((i) => (i + 1) % n);
@@ -82,38 +180,32 @@ function CenterArcCarousel({
       }}
     >
       <div
-        className="relative h-[280px] overflow-hidden sm:h-[440px] lg:h-[500px]"
-        style={{ perspective: compact ? "900px" : "1400px", perspectiveOrigin: "50% 48%" }}
+        ref={stageRef}
+        className="relative h-[340px] overflow-x-clip overflow-y-visible sm:h-[500px] lg:h-[560px]"
+        style={{
+          perspective: compact ? "900px" : "1400px",
+          perspectiveOrigin: "50% 45%",
+        }}
       >
-        <div aria-hidden className="glow-matcha pointer-events-none absolute inset-[12%] opacity-40" />
-
-        <motion.div
+        <div
           aria-hidden
-          className="pointer-events-none absolute bottom-[7%] left-1/2 h-8 w-[38%] -translate-x-1/2 rounded-[100%] bg-matcha-deep/20 blur-2xl sm:h-10"
-          animate={{ scaleX: [1, 1.08, 1], opacity: [0.28, 0.5, 0.28] }}
-          transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+          className="glow-matcha pointer-events-none absolute inset-[10%] opacity-40"
         />
 
-        <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
+        <div
+          ref={glowRef}
+          aria-hidden
+          className="pointer-events-none absolute bottom-[4%] left-1/2 h-8 w-[42%] -translate-x-1/2 rounded-[100%] bg-matcha-deep/20 blur-2xl sm:h-10"
+        />
+
+        <div
+          className="absolute inset-0"
+          style={{ transformStyle: "preserve-3d" }}
+        >
           {images.map((src, i) => {
             const offset = circularOffset(i, active, n);
-            if (Math.abs(offset) > arcSpan) return null;
-
             const abs = Math.abs(offset);
             const isCenter = offset === 0;
-
-            const spacing = compact ? 88 : 155;
-            const arcDepth = compact ? 70 : 95;
-            const arcLift = compact ? 12 : 18;
-            const x = offset * spacing;
-            const z = -abs * abs * arcDepth * 0.55;
-            const yBase = abs * abs * arcLift;
-            const rotateY = offset * (compact ? -36 : -48);
-            const scale = isCenter
-              ? compact
-                ? 1.12
-                : 1.55
-              : Math.max(0.62, (compact ? 0.82 : 0.9) - abs * 0.14);
 
             return (
               <div
@@ -121,44 +213,24 @@ function CenterArcCarousel({
                 className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <motion.button
+                <button
+                  ref={(node) => {
+                    itemRefs.current[i] = node;
+                  }}
                   type="button"
                   aria-label={`Vista ${i + 1} de ${n}`}
                   aria-current={isCenter ? "true" : undefined}
                   onClick={() => setActive(i)}
-                  className="pointer-events-auto h-[220px] w-[165px] origin-center cursor-pointer border-0 bg-transparent p-0 sm:h-[290px] sm:w-[230px] lg:h-[320px] lg:w-[250px]"
-                  style={{ transformStyle: "preserve-3d" }}
-                  initial={false}
-                  animate={{
-                    x,
-                    y: isCenter ? [yBase - 14, yBase + 10, yBase - 14] : yBase,
-                    z,
-                    rotateY,
-                    scale,
-                    opacity: 1,
-                    zIndex: isCenter ? 40 : 20 - abs,
+                  className="pointer-events-auto h-[250px] w-[200px] origin-center cursor-pointer border-0 bg-transparent p-0 sm:h-[360px] sm:w-[280px] lg:h-[400px] lg:w-[310px]"
+                  style={{
+                    transformStyle: "preserve-3d",
+                    visibility:
+                      Math.abs(offset) > arcSpan ? "hidden" : undefined,
                   }}
-                  transition={
-                    isCenter
-                      ? {
-                          x: { duration: 0.75, ease: EASE },
-                          z: { duration: 0.75, ease: EASE },
-                          rotateY: { duration: 0.75, ease: EASE },
-                          scale: { duration: 0.75, ease: EASE },
-                          opacity: { duration: 0.2 },
-                          zIndex: { duration: 0 },
-                          y: {
-                            duration: 3.8,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          },
-                        }
-                      : { duration: 0.75, ease: EASE, zIndex: { duration: 0 } }
-                  }
                 >
                   <div
                     className={cn(
-                      "flex h-full w-full items-end justify-center",
+                      "flex h-full w-full items-center justify-center",
                       isCenter &&
                         "drop-shadow-[0_40px_60px_rgba(12,64,53,0.38)]"
                     )}
@@ -166,14 +238,14 @@ function CenterArcCarousel({
                     <Image
                       src={src}
                       alt={isCenter ? `${name} — vista ${i + 1} de ${n}` : ""}
-                      width={560}
-                      height={700}
+                      width={620}
+                      height={780}
                       priority={isCenter || abs <= 1}
-                      className="h-full w-auto max-w-full object-contain object-bottom select-none"
+                      className="h-full w-auto max-h-full max-w-full object-contain object-center select-none"
                       draggable={false}
                     />
                   </div>
-                </motion.button>
+                </button>
               </div>
             );
           })}
@@ -229,7 +301,12 @@ function ProductShowcase({
   copy,
 }: {
   product: LocalizedProduct;
-  copy: { buyNow: string; added: string; goToOrder: string; carouselHint: string };
+  copy: {
+    buyNow: string;
+    added: string;
+    goToOrder: string;
+    carouselHint: string;
+  };
 }) {
   const { addItem, openDrawer } = useCart();
   const { locale } = useLocale();
@@ -243,11 +320,8 @@ function ProductShowcase({
   };
 
   return (
-    <motion.article
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={VIEWPORT}
+    <GsapReveal
+      as="article"
       className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14"
     >
       <div className="min-w-0 overflow-x-clip">
@@ -305,11 +379,9 @@ function ProductShowcase({
           </Link>
         </div>
 
-        <p className="mt-4 text-xs text-ink-faint">
-          {copy.carouselHint}
-        </p>
+        <p className="mt-4 text-xs text-ink-faint">{copy.carouselHint}</p>
       </div>
-    </motion.article>
+    </GsapReveal>
   );
 }
 
@@ -331,23 +403,27 @@ export function Products({ showHeading = true }: ProductsProps) {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         {showHeading && (
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={VIEWPORT}
+          <GsapReveal
             className="mx-auto mb-10 max-w-2xl text-center sm:mb-14"
+            childSelector="[data-reveal]"
+            stagger={0.08}
           >
-            <p className="text-xs font-medium tracking-[0.22em] text-matcha-mid uppercase">
+            <p
+              data-reveal
+              className="text-xs font-medium tracking-[0.22em] text-matcha-mid uppercase"
+            >
               {dict.products.eyebrow}
             </p>
-            <h2 className="mt-4 font-serif text-[1.75rem] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+            <h2
+              data-reveal
+              className="mt-4 font-serif text-[1.75rem] font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl"
+            >
               {dict.products.title}
             </h2>
-            <p className="mt-4 text-ink-soft">
+            <p data-reveal className="mt-4 text-ink-soft">
               {dict.products.subtitle}
             </p>
-          </motion.div>
+          </GsapReveal>
         )}
 
         {product ? (

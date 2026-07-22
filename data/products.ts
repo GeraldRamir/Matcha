@@ -24,7 +24,6 @@ const CEREMONIAL_IMAGES = [
   "/images/cutouts/solae-ceremonial/view-01.png", // frente
   "/images/cutouts/solae-ceremonial/view-02.png", // ¾ superior
   "/images/cutouts/solae-ceremonial/view-03.png", // lateral
-  "/images/cutouts/solae-ceremonial/view-04.png", // base
 ] as const;
 
 /** Structural product data; localized copy comes from `lib/i18n`. */

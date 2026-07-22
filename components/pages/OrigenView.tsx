@@ -20,19 +20,6 @@ export function OrigenView() {
         description={page.description}
       />
 
-      <section className="border-y border-line bg-cream-soft py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-8 lg:grid-cols-3">
-          {page.pillars.map((item) => (
-            <div key={item.title}>
-              <h2 className="font-serif text-xl font-bold text-matcha-deep sm:text-2xl">
-                {item.title}
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-ink-soft">{item.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <HowItWorks />
       <WhyUs />
       <Gallery />

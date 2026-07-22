@@ -59,9 +59,9 @@ export function WhyUs() {
             initial="hidden"
             whileInView="visible"
             viewport={VIEWPORT}
-            className="relative"
+            className="relative h-full min-h-[20rem] lg:min-h-[28rem]"
           >
-            <div className="relative aspect-4/3 overflow-hidden rounded-sm shadow-lift">
+            <div className="relative h-full min-h-[20rem] w-full overflow-hidden rounded-sm shadow-lift lg:min-h-[28rem]">
               <Image
                 src="/images/gallery-field.webp"
                 alt={dict.whyUs.imageAlt}

@@ -15,6 +15,9 @@ export function ProductosView() {
         eyebrow={page.eyebrow}
         title={page.title}
         description={page.description}
+        imageSrc="/images/cutouts/matcha-splash.png"
+        imageAlt={page.imageAlt}
+        badges={page.badges}
       />
       <Products showHeading={false} />
       <CtaBanner title={page.ctaTitle} description={page.ctaBody} />

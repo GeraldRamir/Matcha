@@ -65,13 +65,15 @@ export type Dictionary = {
     body: string;
     cta: string;
     latteAlt: string;
+    productAlt: string;
     chips: { title: string; detail: string }[];
   };
   stats: {
     aria: string;
     title: string;
-    lovedBy: string;
-    items: { label: string }[];
+    body: string;
+    route: string;
+    items: { title: string; detail: string }[];
     videoAria: string;
   };
   whyMatcha: {
@@ -108,6 +110,7 @@ export type Dictionary = {
     body: string;
     cta: string;
     route: string;
+    imageAlt: string;
   };
   benefits: {
     aria: string;
@@ -183,7 +186,6 @@ export type Dictionary = {
       eyebrow: string;
       title: string;
       description: string;
-      pillars: { title: string; text: string }[];
       ready: string;
       viewCollection: string;
       or: string;
@@ -202,6 +204,8 @@ export type Dictionary = {
       eyebrow: string;
       title: string;
       description: string;
+      imageAlt: string;
+      badges: string[];
       ctaTitle: string;
       ctaBody: string;
     };

@@ -36,4 +36,10 @@ export const GALLERY: GalleryItem[] = [
     caption: "De la hoja al polvo ceremonial",
     aspect: "portrait",
   },
+  {
+    src: "/images/gallery-powder.webp",
+    alt: "Polvo de matcha ceremonial tamizado",
+    caption: "Polvo ceremonial fino",
+    aspect: "landscape",
+  },
 ];
