@@ -63,6 +63,7 @@ export const en: Dictionary = {
       "Premium ceremonial matcha with a smooth, vibrant, and authentic flavor. Wellness and a moment of enjoyment, at home or wherever you like.",
     cta: "Order now",
     latteAlt: "Solae matcha latte",
+    productAlt: "Solae Premium Ceremonial 4 oz tin",
     chips: [
       { title: "100% ceremonial", detail: "Grown in Japan" },
       { title: "Calm energy", detail: "Focus without the jitters" },
@@ -70,14 +71,32 @@ export const en: Dictionary = {
     ],
   },
   stats: {
-    aria: "Solae by the numbers",
+    aria: "What defines Solae",
     title: "Every sip of matcha, a ritual done right.",
-    lovedBy: "Loved by more than 2,400 customers",
+    body:
+      "Premium ceremonial matcha with a clear path: from Japan to your cup, through Casa Solae.",
+    route: "Japan · United States · Dominican Republic",
     items: [
-      { label: "Cups prepared" },
-      { label: "Orders delivered" },
-      { label: "Positive reviews" },
-      { label: "Organic matcha" },
+      {
+        title: "Ceremonial grade",
+        detail:
+          "Premium ceremonial matcha selected for its smooth, vibrant, and authentic flavor.",
+      },
+      {
+        title: "Made in Japan",
+        detail:
+          "Crafted with traditional Japanese methods before its journey begins.",
+      },
+      {
+        title: "Packaged in the U.S.",
+        detail:
+          "Prepared and packaged with care to preserve freshness and quality.",
+      },
+      {
+        title: "In the DR with Casa Solae",
+        detail:
+          "Casa Solae's matcha line, ready for your ritual in Santo Domingo and beyond.",
+      },
     ],
     videoAria: "Solae matcha ritual in motion",
   },
@@ -299,23 +318,6 @@ export const en: Dictionary = {
       title: "The story of Solae Matcha",
       description:
         "Solae Matcha was born from our founder's passion for matcha and wellness. It's Casa Solae's matcha line, created to bring our matcha experience anywhere. We offer high-quality premium ceremonial matcha, carefully selected to prepare drinks with a smooth, vibrant, and authentic flavor. Our goal is for every cup to combine wellness, quality, and a moment of ritual — at home or wherever you prefer.",
-      pillars: [
-        {
-          title: "Japan",
-          text:
-            "Ceremonial matcha produced with traditional methods and selected leaves for a smooth, authentic flavor.",
-        },
-        {
-          title: "United States",
-          text:
-            "Professional packaging that protects freshness, color, and aroma until it reaches your hands.",
-        },
-        {
-          title: "Dominican Republic",
-          text:
-            "Sold by Casa Solae so the matcha ritual becomes part of your everyday life.",
-        },
-      ],
       ready: "Ready to see the collection?",
       viewCollection: "View collection",
       or: "or",
