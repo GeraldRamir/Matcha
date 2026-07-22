@@ -79,7 +79,7 @@ export const es: Dictionary = {
       { label: "Reseñas positivas" },
       { label: "Matcha orgánico" },
     ],
-    videoAria: "Matcha ceremonial en movimiento",
+    videoAria: "Ritual de matcha Solae en movimiento",
   },
   whyMatcha: {
     eyebrow: "Nuestro camino",
@@ -110,7 +110,7 @@ export const es: Dictionary = {
     aria: "Productos",
     eyebrow: "El producto",
     title: "Solae Premium Ceremonial",
-    subtitle: "Una lata. Cuatro perspectivas. El matcha de tu ritual diario.",
+    subtitle: "Una lata. Tres perspectivas. El matcha de tu ritual diario.",
     buyNow: "Comprar ahora",
     added: "Agregado ✓",
     goToOrder: "Ir al pedido",
@@ -118,9 +118,9 @@ export const es: Dictionary = {
   },
   product: {
     ceremonial: {
-      subtitle: "Grado ceremonial · 4 oz · Origen Japón",
+      subtitle: "Grado ceremonial · 4 oz",
       description:
-        "Matcha premium ceremonial de Solae: producido en Japón, empacado en EE. UU. y listo para tu ritual en República Dominicana. Sabor suave, vibrante y auténtico — tu upgrade diario.",
+        "Cuatro onzas listas para whiskear o preparar latte. Color jade intenso, umami suave y una textura limpia que acompaña tu foco sin bajones.",
       servings: "≈ 60 tazas",
       badge: "Premium",
       notes: ["Umami dulce", "Textura sedosa", "Final limpio"],
@@ -134,6 +134,7 @@ export const es: Dictionary = {
       "Matcha ceremonial premium Solae — suave, vibrante y listo para tu taza o tu latte.",
     cta: "Pedir ahora",
     route: "Japón · EE. UU. · RD",
+    imageAlt: "Taza de matcha latte Solae",
   },
   benefits: {
     aria: "Beneficios",
@@ -334,7 +335,9 @@ export const es: Dictionary = {
       eyebrow: "La tienda",
       title: "Solae Premium Ceremonial",
       description:
-        "Una sola lata, varias perspectivas. Matcha ceremonial 4 oz con sabor suave, vibrante y auténtico. Agrega al pedido y completa en minutos.",
+        "Una lata, tres ángulos. Elige tu matcha, agrégalo al pedido y confírmalo en minutos por WhatsApp o email.",
+      imageAlt: "Salpicadura de matcha fresco",
+      badges: ["4 oz", "Grado ceremonial", "≈ 60 tazas"],
       ctaTitle: "¿Listo para tu ritual?",
       ctaBody:
         "Completa tu pedido y envíalo por WhatsApp o email. Te confirmamos disponibilidad y entrega en minutos.",
@@ -394,7 +397,7 @@ export const es: Dictionary = {
       openMaps: "Abrir en Google Maps",
       channelsTitle: "Canales directos",
       phoneLabel: "Teléfono",
-      phoneHint: "Número provisional — te confirmamos el definitivo pronto.",
+      phoneHint: "Pedidos y consultas por llamada o WhatsApp.",
       instagramLabel: "Instagram",
       instagramHint: "Síguenos y escríbenos por mensaje directo.",
       emailLabel: "Email",
@@ -465,7 +468,7 @@ export const es: Dictionary = {
         {
           title: "8. Contacto",
           paragraphs: [
-            "Para consultas sobre estos términos: pedidos@solaematcha.com · WhatsApp disponible en el sitio · Casa Solae, C. José Amado Soler 8, Santo Domingo 10127.",
+            "Para consultas sobre estos términos: info.casasolae@gmail.com · WhatsApp disponible en el sitio · Casa Solae, C. José Amado Soler 8, Santo Domingo 10127.",
           ],
         },
       ],
@@ -529,13 +532,13 @@ export const es: Dictionary = {
           paragraphs: [
             "Los datos que nos envías (nombre, teléfono, email, dirección) se usan solo para gestionar tu pedido, responder consultas y mejorar el servicio.",
             "No vendemos tu información a terceros. Podemos compartir datos estrictamente necesarios con proveedores de mensajería o logística para completar la entrega.",
-            "Puedes solicitar acceso, corrección o eliminación de tus datos escribiendo a pedidos@solaematcha.com.",
+            "Puedes solicitar acceso, corrección o eliminación de tus datos escribiendo a info.casasolae@gmail.com.",
           ],
         },
         {
           title: "8. Contacto",
           paragraphs: [
-            "Pedidos y soporte: pedidos@solaematcha.com · WhatsApp e Instagram · Casa Solae, C. José Amado Soler 8, Santo Domingo 10127.",
+            "Pedidos y soporte: info.casasolae@gmail.com · WhatsApp e Instagram · Casa Solae, C. José Amado Soler 8, Santo Domingo 10127.",
           ],
         },
       ],
