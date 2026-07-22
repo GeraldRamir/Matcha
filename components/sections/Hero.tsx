@@ -124,19 +124,19 @@ export function Hero() {
         </p>
 
         {/*
-          Mobile (<640): tighter composition so MATCHA + cup fit one viewport.
+          Mobile (<640): MATCHA must fit the viewport width (no side clip).
           sm+ / lg+: original desktop sizes and positions unchanged.
         */}
-        <div className="relative mx-auto mt-1 w-full max-w-[min(100%,22rem)] pb-[70%] sm:max-w-[92vw] sm:pb-[28%] lg:pb-[24%]">
+        <div className="relative mx-auto mt-1 w-full max-w-full pb-[112%] sm:max-w-[92vw] sm:pb-[28%] lg:pb-[24%]">
           <h1
             id="hero-title"
             data-hero="title"
-            className="font-hero relative z-0 text-center text-[clamp(3.5rem,21vw,5.5rem)] leading-[0.84] text-ink select-none sm:text-[clamp(4.75rem,18vw,12.75rem)] sm:leading-[0.8]"
+            className="font-hero relative z-0 mx-auto w-full max-w-[100%] px-1 text-center text-[clamp(2.55rem,13.8vw,3.85rem)] leading-[0.86] tracking-[-0.02em] text-ink select-none sm:px-0 sm:text-[clamp(4.75rem,18vw,12.75rem)] sm:leading-[0.8] sm:tracking-normal"
           >
-            <span className="relative inline-block">
+            <span className="relative inline-block max-w-full">
               MATCHA
               <Sparkles
-                className="absolute top-[6%] -left-[3.5%] h-3.5 w-3.5 text-gold-deep sm:h-5 sm:w-5 lg:h-6 lg:w-6"
+                className="absolute top-[8%] left-0 h-3 w-3 text-gold-deep sm:top-[6%] sm:-left-[3.5%] sm:h-5 sm:w-5 lg:h-6 lg:w-6"
                 fill="currentColor"
                 aria-hidden
               />
@@ -145,16 +145,16 @@ export function Hero() {
 
           <div
             data-hero="seal"
-            className="absolute top-[1%] right-0 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-matcha-deep/30 bg-gold text-center sm:top-0 sm:right-[2%] sm:h-[4.25rem] sm:w-[4.25rem] lg:right-[4%]"
+            className="absolute top-[2%] right-1 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-matcha-deep/30 bg-gold text-center sm:top-0 sm:right-[2%] sm:h-[4.25rem] sm:w-[4.25rem] lg:right-[4%]"
           >
-            <span className="font-serif text-[6.5px] leading-tight font-bold tracking-wide text-matcha-deep uppercase sm:text-[10px]">
+            <span className="font-serif text-[6px] leading-tight font-bold tracking-wide text-matcha-deep uppercase sm:text-[10px]">
               Casa
               <br />
               Solae
             </span>
           </div>
 
-          <div className="pointer-events-none absolute top-[22%] left-1/2 z-10 w-[90%] max-w-[18rem] -translate-x-1/2 sm:top-[32%] sm:w-[52%] sm:max-w-[30rem] sm:-translate-y-[8%] lg:max-w-[32rem]">
+          <div className="pointer-events-none absolute top-[22%] left-1/2 z-10 w-[min(82%,16.5rem)] -translate-x-1/2 sm:top-[32%] sm:w-[52%] sm:max-w-[30rem] sm:-translate-y-[8%] lg:max-w-[32rem]">
             <div data-hero="product" className="relative will-change-transform">
               <div
                 aria-hidden
@@ -174,8 +174,8 @@ export function Hero() {
           </div>
         </div>
 
-        {/* sm+ = original desktop grid; max-sm = centered stack */}
-        <div className="relative z-20 -mt-2 grid items-end gap-8 max-sm:mt-0 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:gap-7 sm:-mt-10 lg:-mt-14 lg:grid-cols-[1fr_minmax(0,12rem)_1fr]">
+        {/* sm+ = original desktop grid; max-sm = push copy below the tin */}
+        <div className="relative z-20 -mt-2 grid items-end gap-8 max-sm:mt-6 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:gap-7 sm:-mt-10 lg:-mt-14 lg:grid-cols-[1fr_minmax(0,12rem)_1fr]">
           <div
             data-hero="body"
             className="mx-auto max-w-sm text-center max-sm:w-full max-sm:max-w-[20rem] sm:mx-0 sm:max-w-[18rem] sm:text-left"

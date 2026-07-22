@@ -17,15 +17,14 @@ import {
 } from "@/lib/i18n/products";
 
 const AUTO_MS = 3000;
-/** Neighbors on each side of the center arc (desktop) */
+/** Neighbors on each side of the center arc (large desktop only) */
 const ARC_SPAN_DESKTOP = 2;
-/** On mobile, only the center tin — neighbors clip and crowd 390px screens */
-const ARC_SPAN_MOBILE = 0;
 
+/** Below lg: one tin only — arc neighbors crowd and overlap on phones/tablets */
 function useIsCompact() {
   const [compact, setCompact] = useState(true);
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)");
+    const mq = window.matchMedia("(max-width: 1023px)");
     const apply = () => setCompact(mq.matches);
     apply();
     mq.addEventListener("change", apply);
@@ -42,10 +41,8 @@ function circularOffset(index: number, active: number, length: number) {
 }
 
 /**
- * Center Arc Carousel in 3D:
- * items sit on a concave arc facing the viewer; center is largest / closest;
- * sides rotate toward the middle (coverflow). Full opacity — no fade-outs.
- * Index wraps so the track feels continuous.
+ * Center Arc Carousel in 3D (desktop lg+).
+ * On compact viewports only the active tin is mounted — no side stacking.
  */
 function CenterArcCarousel({
   images,
@@ -62,7 +59,7 @@ function CenterArcCarousel({
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const glowRef = useRef<HTMLDivElement>(null);
   const n = images.length;
-  const arcSpan = compact ? ARC_SPAN_MOBILE : ARC_SPAN_DESKTOP;
+  const arcSpan = compact ? 0 : ARC_SPAN_DESKTOP;
 
   useEffect(() => {
     if (paused || n < 2) return;
@@ -90,6 +87,37 @@ function CenterArcCarousel({
         );
       }
 
+      if (compact) {
+        const el = itemRefs.current[0];
+        if (!el) return;
+        gsap.killTweensOf(el);
+        if (reduced) {
+          gsap.set(el, { autoAlpha: 1, y: 0, scale: 1 });
+          return;
+        }
+        gsap.fromTo(
+          el,
+          { autoAlpha: 0, scale: 0.94, y: 12 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.55,
+            ease: GSAP_EASE,
+            onComplete: () => {
+              gsap.to(el, {
+                y: 6,
+                duration: 1.9,
+                ease: "sine.inOut",
+                yoyo: true,
+                repeat: -1,
+              });
+            },
+          }
+        );
+        return;
+      }
+
       images.forEach((_, i) => {
         const el = itemRefs.current[i];
         if (!el) return;
@@ -104,18 +132,16 @@ function CenterArcCarousel({
           return;
         }
 
-        const spacing = compact ? 96 : 170;
-        const arcDepth = compact ? 60 : 85;
-        const arcLift = compact ? 8 : 12;
+        const spacing = 170;
+        const arcDepth = 85;
+        const arcLift = 12;
         const x = offset * spacing;
         const z = -abs * abs * arcDepth * 0.55;
         const yBase = abs * abs * arcLift;
-        const rotateY = offset * (compact ? -32 : -42);
+        const rotateY = offset * -42;
         const scale = isCenter
-          ? compact
-            ? 1.02
-            : 1.22
-          : Math.max(0.68, (compact ? 0.86 : 0.92) - abs * 0.12);
+          ? 1.22
+          : Math.max(0.68, 0.92 - abs * 0.12);
 
         gsap.killTweensOf(el);
 
@@ -169,7 +195,7 @@ function CenterArcCarousel({
 
   return (
     <div
-      className="relative overflow-x-clip"
+      className="relative overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -181,11 +207,15 @@ function CenterArcCarousel({
     >
       <div
         ref={stageRef}
-        className="relative h-[340px] overflow-x-clip overflow-y-visible sm:h-[500px] lg:h-[560px]"
-        style={{
-          perspective: compact ? "900px" : "1400px",
-          perspectiveOrigin: "50% 45%",
-        }}
+        className="relative h-[300px] overflow-hidden sm:h-[420px] lg:h-[560px]"
+        style={
+          compact
+            ? undefined
+            : {
+                perspective: "1400px",
+                perspectiveOrigin: "50% 45%",
+              }
+        }
       >
         <div
           aria-hidden
@@ -200,55 +230,81 @@ function CenterArcCarousel({
 
         <div
           className="absolute inset-0"
-          style={{ transformStyle: "preserve-3d" }}
+          style={compact ? undefined : { transformStyle: "preserve-3d" }}
         >
-          {images.map((src, i) => {
-            const offset = circularOffset(i, active, n);
-            const abs = Math.abs(offset);
-            const isCenter = offset === 0;
-
-            return (
-              <div
-                key={src}
-                className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                style={{ transformStyle: "preserve-3d" }}
+          {compact ? (
+            <div className="absolute inset-0 flex items-center justify-center px-10">
+              <button
+                key={images[active]}
+                ref={(node) => {
+                  itemRefs.current[0] = node;
+                }}
+                type="button"
+                aria-label={`Vista ${active + 1} de ${n}`}
+                aria-current="true"
+                className="pointer-events-auto h-[240px] w-[190px] cursor-default border-0 bg-transparent p-0 sm:h-[320px] sm:w-[250px]"
               >
-                <button
-                  ref={(node) => {
-                    itemRefs.current[i] = node;
-                  }}
-                  type="button"
-                  aria-label={`Vista ${i + 1} de ${n}`}
-                  aria-current={isCenter ? "true" : undefined}
-                  onClick={() => setActive(i)}
-                  className="pointer-events-auto h-[250px] w-[200px] origin-center cursor-pointer border-0 bg-transparent p-0 sm:h-[360px] sm:w-[280px] lg:h-[400px] lg:w-[310px]"
-                  style={{
-                    transformStyle: "preserve-3d",
-                    visibility:
-                      Math.abs(offset) > arcSpan ? "hidden" : undefined,
-                  }}
+                <div className="flex h-full w-full items-center justify-center drop-shadow-[0_28px_48px_rgba(12,64,53,0.32)]">
+                  <Image
+                    src={images[active]}
+                    alt={`${name} — vista ${active + 1} de ${n}`}
+                    width={620}
+                    height={780}
+                    priority
+                    className="h-full w-auto max-h-full max-w-full object-contain object-center select-none"
+                    draggable={false}
+                  />
+                </div>
+              </button>
+            </div>
+          ) : (
+            images.map((src, i) => {
+              const offset = circularOffset(i, active, n);
+              const abs = Math.abs(offset);
+              const isCenter = offset === 0;
+              if (Math.abs(offset) > arcSpan) return null;
+
+              return (
+                <div
+                  key={src}
+                  className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  style={{ transformStyle: "preserve-3d" }}
                 >
-                  <div
-                    className={cn(
-                      "flex h-full w-full items-center justify-center",
-                      isCenter &&
-                        "drop-shadow-[0_40px_60px_rgba(12,64,53,0.38)]"
-                    )}
+                  <button
+                    ref={(node) => {
+                      itemRefs.current[i] = node;
+                    }}
+                    type="button"
+                    aria-label={`Vista ${i + 1} de ${n}`}
+                    aria-current={isCenter ? "true" : undefined}
+                    onClick={() => setActive(i)}
+                    className="pointer-events-auto h-[360px] w-[280px] origin-center cursor-pointer border-0 bg-transparent p-0 lg:h-[400px] lg:w-[310px]"
+                    style={{ transformStyle: "preserve-3d" }}
                   >
-                    <Image
-                      src={src}
-                      alt={isCenter ? `${name} — vista ${i + 1} de ${n}` : ""}
-                      width={620}
-                      height={780}
-                      priority={isCenter || abs <= 1}
-                      className="h-full w-auto max-h-full max-w-full object-contain object-center select-none"
-                      draggable={false}
-                    />
-                  </div>
-                </button>
-              </div>
-            );
-          })}
+                    <div
+                      className={cn(
+                        "flex h-full w-full items-center justify-center",
+                        isCenter &&
+                          "drop-shadow-[0_40px_60px_rgba(12,64,53,0.38)]"
+                      )}
+                    >
+                      <Image
+                        src={src}
+                        alt={
+                          isCenter ? `${name} — vista ${i + 1} de ${n}` : ""
+                        }
+                        width={620}
+                        height={780}
+                        priority={isCenter || abs <= 1}
+                        className="h-full w-auto max-h-full max-w-full object-contain object-center select-none"
+                        draggable={false}
+                      />
+                    </div>
+                  </button>
+                </div>
+              );
+            })
+          )}
         </div>
 
         {n > 1 && (
@@ -257,7 +313,7 @@ function CenterArcCarousel({
               type="button"
               onClick={prev}
               aria-label="Foto anterior"
-              className="absolute top-1/2 left-0 z-50 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/90 text-ink shadow-soft backdrop-blur-sm transition-colors hover:bg-matcha-deep hover:text-cream sm:left-1"
+              className="absolute top-1/2 left-1 z-50 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/95 text-ink shadow-soft backdrop-blur-sm transition-colors hover:bg-matcha-deep hover:text-cream"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -265,7 +321,7 @@ function CenterArcCarousel({
               type="button"
               onClick={next}
               aria-label="Foto siguiente"
-              className="absolute top-1/2 right-0 z-50 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/90 text-ink shadow-soft backdrop-blur-sm transition-colors hover:bg-matcha-deep hover:text-cream sm:right-1"
+              className="absolute top-1/2 right-1 z-50 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-line bg-surface/95 text-ink shadow-soft backdrop-blur-sm transition-colors hover:bg-matcha-deep hover:text-cream"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
